@@ -1,0 +1,2 @@
+This file is just a placeholder to ensure the logs directory exists.
+You can safely delete this file.

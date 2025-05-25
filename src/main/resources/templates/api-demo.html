@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API调用演示</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .api-card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .api-card:hover {
+            transform: translateY(-5px);
+        }
+        .result-area {
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            min-height: 50px;
+        }
+        .btn-custom {
+            margin-top: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">API调用演示</h1>
+        
+        <!-- Token API -->
+        <div class="card api-card">
+            <div class="card-header bg-primary text-white">
+                <h5>TokenController - /getToken</h5>
+            </div>
+            <div class="card-body">
+                <p>获取系统token</p>
+                <button id="getTokenBtn" class="btn btn-primary btn-custom">获取Token</button>
+                <div class="result-area" id="tokenResult"></div>
+            </div>
+        </div>
+        
+        <!-- Data Fetch API -->
+        <div class="card api-card">
+            <div class="card-header bg-success text-white">
+                <h5>DataFetchController - /fetchData</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="startPage" class="form-label">起始页</label>
+                        <input type="number" class="form-control" id="startPage" value="1">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="endPage" class="form-label">结束页</label>
+                        <input type="number" class="form-control" id="endPage" value="4">
+                    </div>
+                </div>
+                <button id="fetchDataBtn" class="btn btn-success btn-custom">获取数据</button>
+                <div class="result-area" id="fetchDataResult"></div>
+            </div>
+        </div>
+        
+        <!-- Item Detail API -->
+        <div class="card api-card">
+            <div class="card-header bg-info text-white">
+                <h5>ItemDetailController - /processItems</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="itemStartId" class="form-label">起始ID</label>
+                        <input type="number" class="form-control" id="itemStartId" value="1">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="itemEndId" class="form-label">结束ID</label>
+                        <input type="number" class="form-control" id="itemEndId" value="6000">
+                    </div>
+                </div>
+                <button id="processItemsBtn" class="btn btn-info btn-custom">处理项目</button>
+                <div class="result-area" id="processItemsResult"></div>
+            </div>
+        </div>
+        
+        <!-- Download API -->
+        <div class="card api-card">
+            <div class="card-header bg-warning text-dark">
+                <h5>DownloadController - /down</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="downloadStartId" class="form-label">起始ID</label>
+                        <input type="number" class="form-control" id="downloadStartId" value="1">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="downloadEndId" class="form-label">结束ID</label>
+                        <input type="number" class="form-control" id="downloadEndId" value="6000">
+                    </div>
+                </div>
+                <button id="downloadBtn" class="btn btn-warning btn-custom">批量下载</button>
+                <div class="result-area" id="downloadResult"></div>
+            </div>
+        </div>
+        
+        <!-- Card API -->
+        <div class="card api-card">
+            <div class="card-header bg-secondary text-white">
+                <h5>cardController - /card</h5>
+            </div>
+            <div class="card-body">
+                <p>访问卡片页面</p>
+                <button id="cardBtn" class="btn btn-secondary btn-custom">访问卡片</button>
+                <div class="result-area" id="cardResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Token API
+        document.getElementById('getTokenBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('tokenResult');
+            resultDiv.textContent = '请求中...';
+            
+            try {
+                const response = await fetch('/getToken');
+                const data = await response.text();
+                resultDiv.textContent = `Token: ${data}`;
+            } catch (error) {
+                resultDiv.textContent = `错误: ${error.message}`;
+            }
+        });
+        
+        // Data Fetch API
+        document.getElementById('fetchDataBtn').addEventListener('click', async () => {
+            const startPage = document.getElementById('startPage').value;
+            const endPage = document.getElementById('endPage').value;
+            const resultDiv = document.getElementById('fetchDataResult');
+            resultDiv.textContent = '请求中...';
+            
+            try {
+                const response = await fetch(`/fetchData?startPage=${startPage}&endPage=${endPage}`);
+                const data = await response.text();
+                resultDiv.textContent = `结果: ${data}`;
+            } catch (error) {
+                resultDiv.textContent = `错误: ${error.message}`;
+            }
+        });
+        
+        // Item Detail API
+        document.getElementById('processItemsBtn').addEventListener('click', async () => {
+            const startId = document.getElementById('itemStartId').value;
+            const endId = document.getElementById('itemEndId').value;
+            const resultDiv = document.getElementById('processItemsResult');
+            resultDiv.textContent = '请求中...';
+            
+            try {
+                const response = await fetch(`/processItems?startId=${startId}&endId=${endId}`);
+                const data = await response.text();
+                resultDiv.textContent = `结果: ${data}`;
+            } catch (error) {
+                resultDiv.textContent = `错误: ${error.message}`;
+            }
+        });
+        
+        // Download API
+        document.getElementById('downloadBtn').addEventListener('click', async () => {
+            const startId = document.getElementById('downloadStartId').value;
+            const endId = document.getElementById('downloadEndId').value;
+            const resultDiv = document.getElementById('downloadResult');
+            resultDiv.textContent = '请求中...';
+            
+            try {
+                const response = await fetch(`/down?startId=${startId}&endId=${endId}`);
+                const data = await response.text();
+                resultDiv.textContent = `结果: ${data}`;
+            } catch (error) {
+                resultDiv.textContent = `错误: ${error.message}`;
+            }
+        });
+        
+        
+        // Card API
+        document.getElementById('cardBtn').addEventListener('click', () => {
+            window.location.href = '/card';
+        });
+    </script>
+</body>
+</html>

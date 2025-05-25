@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源详情 - Loibus</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .header {
+            background-color: #1e88e5;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .main {
+            flex: 1;
+            padding: 20px 0;
+        }
+        .card-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .card-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        .card-meta span {
+            margin-right: 15px;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .swiper {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+        }
+        .swiper-slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: #1e88e5;
+        }
+        .swiper-pagination-bullet-active {
+            background: #1e88e5;
+        }
+        .card-details {
+            margin-top: 15px;
+        }
+        .card-description {
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .tag {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .download-section {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        .download-option {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .download-option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .download-option-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .download-option-speed {
+            font-size: 12px;
+            color: #666;
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1e88e5;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            text-align: center;
+        }
+        .download-btn:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .download-btn i {
+            margin-right: 8px;
+        }
+        .vip-download-btn {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            position: relative;
+            overflow: hidden;
+        }
+        .vip-download-btn::after {
+            content: "VIP";
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ffeb3b;
+            color: #ff5722;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .vip-badge {
+            background-color: #ff9800;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #333;
+            color: #aaa;
+            font-size: 13px;
+        }
+        .loading-text {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .error-text {
+            color: #f44336;
+            text-align: center;
+            padding: 20px;
+        }
+        .download-error {
+            background: #ffeeee;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        @media (max-width: 768px) {
+            .swiper {
+                height: 300px;
+            }
+            .download-btn {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav">
+                <div class="logo">哆啦A梦</div>
+                <div class="nav-links">
+                    <a href="index.html">首页</a>
+                    <a href="#">分类</a>
+                    <a href="#">VIP</a>
+                    <a href="#">登录</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="card-container" id="cardDetail">
+                <div class="loading-text">加载中...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 哆啦A梦 - 免责声明：本项目不存储任何数据，仅供学习交流，数据均来自互联网，本项目所产生的所有数据请及时删除</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        // 从URL获取ID参数
+        function getIDFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        // 转换图片路径为相对路径
+        function getRelativeImagePath(absolutePath) {
+            if (!absolutePath) return '';
+            const pathParts = absolutePath.split(/[\\\/]/);
+            const imagesIndex = pathParts.indexOf('images');
+            if (imagesIndex !== -1) {
+                return  getIDFromURL() + '/images/' + pathParts.slice(imagesIndex + 1).join('/');
+            }
+            return absolutePath;
+        }
+
+        // 加载卡片数据
+        async function loadCardData(id) {
+            try {
+                const response = await fetch(`/${id}/data.json`);
+                if (!response.ok) throw new Error('卡片数据加载失败');
+                return await response.json();
+            } catch (error) {
+                console.error('加载卡片数据失败:', error);
+                return null;
+            }
+        }
+
+        // 加载下载数据
+        async function loadDownloadData(id) {
+            try {
+                const response = await fetch(`/${id}.json`);
+                if (!response.ok) throw new Error('下载数据加载失败');
+                const data = await response.json();
+                
+                // 验证下载数据格式
+                if (!data.data || !data.data.sv_list) {
+                    throw new Error('下载数据格式不正确');
+                }
+                
+                return data;
+            } catch (error) {
+                console.error('加载下载数据失败:', error);
+                return null;
+            }
+        }
+
+        // 渲染下载选项
+        function renderDownloadOptions(downloadData) {
+            if (!downloadData) {
+                return `
+                    <div class="download-error">
+                        <p>无法加载下载选项，可能原因：</p>
+                        <ul>
+                            <li>资源已被删除或不存在</li>
+                            <li>服务器暂时不可用</li>
+                            <li>您没有下载权限</li>
+                        </ul>
+                        <p>请稍后再试或联系管理员</p>
+                    </div>
+                `;
+            }
+
+            return downloadData.data.sv_list.map(server => `
+                <div class="download-option">
+                    <div class="download-option-header">
+                        <span class="download-option-name">${server.sv_name}</span>
+                        <span class="download-option-speed">${server.sv_desc || '高速下载'}</span>
+                    </div>
+                    <a href="${server.sv_url}" 
+                       class="${server.sv_name.includes('VIP') ? 'vip-download-btn' : 'download-btn'}" 
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        <i class="fas fa-download"></i> 立即下载
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // 渲染卡片内容
+        function renderCard(cardData, downloadData) {
+            const cardHTML = `
+                <div class="card-header">
+                    <h1 class="card-title">${cardData.loi_title || '无标题'}${cardData.vip_requirement > 0 ? `<span class="vip-badge">VIP${cardData.vip_requirement}</span>` : ''}</h1>
+                    <div class="card-meta">
+                        <span>👁️ ${cardData.viewer_count || 0} 浏览</span>
+                        <span>❤️ ${cardData.like_count || 0} 喜欢</span>
+                        <span>📥 ${cardData.download_count || 0} 下载</span>
+                        <span>📅 ${cardData.date || '未知日期'}</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="swiper">
+                        <div class="swiper-wrapper">
+                            ${cardData.images.map(img => `
+                                <div class="swiper-slide">
+                                    <img src="${getRelativeImagePath(img)}" alt="${cardData.loi_title}" loading="lazy">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                    <div class="card-details">
+                        <div class="card-description">
+                            <p>${cardData.loi_description || '暂无详细描述'}</p>
+                        </div>
+                        ${cardData.tags && cardData.tags.length > 0 ? `
+                        <div class="tag-container">
+                            ${cardData.tags.map(tag => `
+                                <span class="tag" style="background-color: ${tag.color || '#eee'}">${tag.name}</span>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+                        <div class="download-section">
+                            <h3>下载选项</h3>
+                            <div style="margin-bottom: 15px; padding: 10px; background: #f0f0f0; border-radius: 4px;">
+                                <strong>解压密码: </strong>${cardData.open_key || '无密码'}
+                            </div>
+                            <div id="downloadOptions">
+                                ${renderDownloadOptions(downloadData)}
+                            </div>
+                            <p style="margin-top: 10px; color: #666; font-size: 12px;">VIP会员可享受更快的下载速度和更多特权</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('cardDetail').innerHTML = cardHTML;
+        }
+
+        // 初始化轮播图
+        function initSwiper() {
+            return new Swiper('.swiper', {
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+            });
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', async () => {
+            const id = getIDFromURL();
+            if (!id) {
+                document.getElementById('cardDetail').innerHTML = '<div class="error-text">无效的资源ID</div>';
+                return;
+            }
+
+            try {
+                const [cardData, downloadData] = await Promise.all([
+                    loadCardData(id),
+                    loadDownloadData(id)
+                ]);
+
+                if (!cardData) {
+                    throw new Error('卡片数据加载失败');
+                }
+
+                renderCard(cardData, downloadData);
+                initSwiper();
+            } catch (error) {
+                console.error('页面初始化失败:', error);
+                document.getElementById('cardDetail').innerHTML = `
+                    <div class="error-text">
+                        加载失败，请检查：<br>
+                        1. 资源ID是否正确<br>
+                        2. 数据文件是否存在<br>
+                        3. 网络连接是否正常
+                    </div>`;
+            }
+        });
+    </script>
+</body>
+</html>
